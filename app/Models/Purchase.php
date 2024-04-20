@@ -13,7 +13,12 @@ class Purchase extends Model
 
     protected $guard = ['id'];
 
-    protected $fillable = [];
+    protected $fillable = [
+        'user_id',
+        'amount',
+        'date',
+        'description',
+    ];
 
     public function user()
     {
