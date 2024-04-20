@@ -16,7 +16,10 @@ return new class extends Migration
             $table->float("amount");
             $table->date("date");
             $table->string("description");
+            $table->bigInteger("transaction_id")->unsigned();
             $table->timestamps();
+
+            $table->foreign('transaction_id')->references('id')->on('transactions');
         });
     }
 
