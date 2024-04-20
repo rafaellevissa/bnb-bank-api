@@ -13,7 +13,12 @@ class Check extends Model
 
     protected $guard = ['id'];
 
-    protected $fillable = [];
+    protected $fillable = [
+        'user_id',
+        'amount',
+        'description',
+        'picture',
+    ];
 
     public function user()
     {

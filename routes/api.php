@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CheckController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,9 @@ Route::group(['prefix' => 'transactions'], function () {
 Route::group(['prefix' => 'purchases'], function () {
     Route::get('/', [PurchaseController::class, 'index']);
     Route::post('/', [PurchaseController::class, 'store']);
+});
+
+Route::group(['prefix' => 'checks'], function () {
+    Route::get('/', [CheckController::class, 'index']);
+    Route::post('/', [CheckController::class, 'store']);
 });

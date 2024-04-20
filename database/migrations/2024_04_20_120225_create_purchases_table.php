@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->float("amount");
-            $table->date("date");
-            $table->string("description");
-            $table->bigInteger("user_id")->unsigned();
+            $table->float('amount');
+            $table->date('date');
+            $table->string('description');
+            $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
