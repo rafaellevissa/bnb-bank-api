@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CheckRequest;
 use App\Repositories\CheckRepository;
+use Illuminate\Support\Facades\Auth;
 
 class CheckController extends Controller
 {
@@ -16,8 +17,12 @@ class CheckController extends Controller
 
     public function index()
     {
-        $userId = 1;
-        $checks = $this->checkRepository->all($userId);
+        if (auth()->user()->hasRole('admin')) {
+            $checks = $this->checkRepository->all();
+        } else {
+            $userId = auth()->id();
+            $checks = $this->checkRepository->all($userId);
+        }
 
         return response()->json($checks);
     }

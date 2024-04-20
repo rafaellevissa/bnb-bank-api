@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
@@ -46,14 +47,14 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function roles()
+    public function getJWTIdentifier()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->getKey();
     }
 
-    public function permissions()
+    public function getJWTCustomClaims()
     {
-        return $this->belongsToMany(Permission::class);
+        return [];
     }
 
     public function checks()
