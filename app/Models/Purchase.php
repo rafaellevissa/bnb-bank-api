@@ -15,8 +15,8 @@ class Purchase extends Model
 
     protected $fillable = [];
 
-    public function transaction()
+    public function user()
     {
-        return $this->belongsTo(Transaction::class);
+        return $this->belongsTo(User::class);
     }
 }

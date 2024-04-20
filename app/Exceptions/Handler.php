@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -18,13 +19,34 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    /**
-     * Register the exception handling callbacks for the application.
-     */
-    public function register(): void
+    public function render($request, Throwable $exception)
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        return $this->handleApiException($request, $exception);
+    }
+
+    protected function handleApiException($request, Throwable $exception)
+    {
+        $status = $this->getStatusCode($exception);
+        $message = $this->getMessage($exception);
+
+        return response()->json([
+            'error' => [
+                'message' => $message,
+                'status' => $status,
+            ]
+        ], $status);
+    }
+
+    protected function getStatusCode(Throwable $exception)
+    {
+        if ($exception instanceof HttpException) {
+            return $exception->getStatusCode();
+        }
+        return 500;
+    }
+
+    protected function getMessage(Throwable $exception)
+    {
+        return $exception->getMessage();
     }
 }
