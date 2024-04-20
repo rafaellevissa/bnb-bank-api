@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('description');
             $table->string('picture');
             $table->bigInteger('user_id')->unsigned();
+            $table->enum('status', [
+                'pending',
+                'accepted',
+                'rejected',
+            ])->default('pending');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

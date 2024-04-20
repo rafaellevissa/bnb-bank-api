@@ -18,6 +18,7 @@ class Check extends Model
         'amount',
         'description',
         'picture',
+        'status',
     ];
 
     public function user()
