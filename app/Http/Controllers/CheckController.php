@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CheckRequest;
 use App\Repositories\CheckRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CheckController extends Controller
@@ -27,9 +28,25 @@ class CheckController extends Controller
         return response()->json($checks);
     }
 
+    public function find(string $checkId)
+    {
+        $userId = auth()->id();
+        $check = $this->checkRepository->findOne($checkId, $userId);
+
+        return response()->json($check);
+    }
+
+    public function update(string $checkId, Request $request)
+    {
+        $paylaod = $request->post();
+        $check = $this->checkRepository->update($checkId, $paylaod);
+
+        return response()->json($check);
+    }
+
     public function store(CheckRequest $request)
     {
-        $userId = 1;
+        $userId = auth()->id();
         $amount = $request->input("amount");
         $description = $request->input("description");
         $picture = $request->file('picture');

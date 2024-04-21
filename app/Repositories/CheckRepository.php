@@ -12,17 +12,38 @@ class CheckRepository
     {
         $checks = ($userId) ? Check::where('user_id', $userId)->get() : Check::all();
 
-        $store = Storage::disk('local');
+        return $checks->map(function ($check) {
+            $checkArray = $check->toArray();
+            $checkArray['pictureBase64'] = $check->getPictureBase64Content();
+            return $checkArray;
+        });
+    }
 
-        foreach ($checks as $check) {
-            $fileContent = $store->get($check->picture);
+    public function update(string $checkId, array $payload)
+    {
+        $check = Check::findOrFail($checkId);
 
-            if ($fileContent !== false) {
-                $check->picture = base64_encode($fileContent);
-            }
+        $check->update($payload);
+
+        return $payload;
+    }
+
+    public function findOne(string $checkId, ?string $userId = null)
+    {
+        if ($userId) {
+            $check = Check::where('id', $checkId)->where('user_id', $userId)->first();
+        } else {
+            $check = Check::where('id', $checkId)->first();
         }
 
-        return $checks;
+        if (!$check) {
+            throw new \Exception("Check not found");
+        }
+
+        $result = $check->toArray();
+        $result['pictureBase64'] = $check->getPictureBase64Content();
+
+        return $result;
     }
 
     public function store(string $userId, float $amount, string $description, UploadedFile $picture)

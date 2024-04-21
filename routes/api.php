@@ -35,5 +35,7 @@ Route::group(['prefix' => 'purchases', 'middleware' => 'auth:api'], function () 
 
 Route::group(['prefix' => 'checks', 'middleware' => 'auth:api'], function () {
     Route::get('/', [CheckController::class, 'index']);
+    Route::get('/{checkId}', [CheckController::class, 'find']);
+    Route::put('/{checkId}', [CheckController::class, 'update']);
     Route::post('/', [CheckController::class, 'store']);
 });
