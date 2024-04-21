@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminCheckController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckController;
 use App\Http\Controllers\PurchaseController;
@@ -24,18 +25,26 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('refresh', [AuthController::class, 'refresh']);
 });
 
-Route::group(['prefix' => 'transactions', 'middleware' => 'auth:api'], function () {
-    Route::get('/', [TransactionController::class, 'index']);
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::group(['prefix' => 'transactions'], function () {
+        Route::middleware('can:transactions.view')->get('/', [TransactionController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'purchases'], function () {
+        Route::middleware('can:purchase.view')->get('/', [PurchaseController::class, 'index']);
+        Route::middleware('can:purchase.create')->post('/', [PurchaseController::class, 'store']);
+    });
+
+    Route::group(['prefix' => 'checks'], function () {
+        Route::middleware('can:checks.view')->get('/', [CheckController::class, 'index']);
+        Route::middleware('can:checks.view')->get('/{checkId}', [CheckController::class, 'find']);
+        Route::middleware('can:checks.create')->post('/', [CheckController::class, 'store']);
+    });
 });
 
-Route::group(['prefix' => 'purchases', 'middleware' => 'auth:api'], function () {
-    Route::get('/', [PurchaseController::class, 'index']);
-    Route::post('/', [PurchaseController::class, 'store']);
-});
-
-Route::group(['prefix' => 'checks', 'middleware' => 'auth:api'], function () {
-    Route::get('/', [CheckController::class, 'index']);
-    Route::get('/{checkId}', [CheckController::class, 'find']);
-    Route::put('/{checkId}', [CheckController::class, 'update']);
-    Route::post('/', [CheckController::class, 'store']);
+Route::group(['prefix' => 'admin'], function () {
+    Route::group(['prefix' => 'checks'], function () {
+        Route::middleware('can:checks.list')->get('/', [AdminCheckController::class, 'index']);
+        Route::middleware('can:checks.update')->put('/{checkId}', [AdminCheckController::class, 'update']);
+    });
 });

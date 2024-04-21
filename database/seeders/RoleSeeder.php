@@ -12,13 +12,13 @@ class RoleSeeder extends Seeder
             'name' => 'admin',
             'permissions' => [
                 'checks.list',
-                'checks.accept',
+                'checks.update',
             ],
         ],
         [
             'name' => 'customer',
             'permissions' => [
-                'balance.view',
+                'transactions.view',
                 'purchase.view',
                 'purchase.create',
                 'checks.view',

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CheckRequest;
 use App\Repositories\CheckRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CheckController extends Controller
 {
@@ -18,12 +17,8 @@ class CheckController extends Controller
 
     public function index()
     {
-        if (auth()->user()->hasRole('admin')) {
-            $checks = $this->checkRepository->all();
-        } else {
-            $userId = auth()->id();
-            $checks = $this->checkRepository->all($userId);
-        }
+        $userId = auth()->id();
+        $checks = $this->checkRepository->all($userId);
 
         return response()->json($checks);
     }
@@ -32,14 +27,6 @@ class CheckController extends Controller
     {
         $userId = auth()->id();
         $check = $this->checkRepository->findOne($checkId, $userId);
-
-        return response()->json($check);
-    }
-
-    public function update(string $checkId, Request $request)
-    {
-        $paylaod = $request->post();
-        $check = $this->checkRepository->update($checkId, $paylaod);
 
         return response()->json($check);
     }

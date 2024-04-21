@@ -9,7 +9,7 @@ class PermissionSeeder extends Seeder
 {
     private $permissions = [
         [
-            'name' => 'balance.view',
+            'name' => 'transactions.view',
         ],
         [
             'name' => 'purchase.view',
@@ -27,7 +27,7 @@ class PermissionSeeder extends Seeder
             'name' => 'checks.list',
         ],
         [
-            'name' => 'checks.accept',
+            'name' => 'checks.update',
         ],
     ];
 
