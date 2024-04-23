@@ -18,7 +18,7 @@ class TransactionController extends Controller
 
     public function index()
     {
-        $userId = 1;
+        $userId = auth()->id();
         $transactions = $this->transactionRepository->all($userId);
         $balance = $this->userRepository->getBalance($userId);
 

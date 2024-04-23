@@ -16,7 +16,7 @@ class PurchaseController extends Controller
 
     public function index()
     {
-        $userId = 1;
+        $userId = auth()->id();
         $purchases = $this->purchaseRepository->all($userId);
 
         return response()->json($purchases);
@@ -24,7 +24,7 @@ class PurchaseController extends Controller
 
     public function store(PurchaseRequest $request)
     {
-        $userId = 1;
+        $userId = auth()->id();
         $amount = $request->input("amount");
         $date = $request->input("date");
         $description = $request->input("description");

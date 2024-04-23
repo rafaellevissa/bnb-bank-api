@@ -18,10 +18,11 @@ class TransactionRepository
         return $transactions->where('type', 'outcoming')->sum('amount');
     }
 
-    public function all(?string $userId = null): Collection
+    public function all(?int $userId = null): Collection
     {
         $checks = User::select('users.id', 'checks.*', DB::raw("'incoming' as type"))
             ->join('checks', 'users.id', '=', 'checks.user_id');
+
 
         $purchases = User::select('users.id', 'purchases.*', DB::raw("'outcoming' as type"))
             ->join('purchases', 'users.id', '=', 'purchases.user_id');
@@ -31,10 +32,13 @@ class TransactionRepository
             $purchases->where('users.id', $userId);
         }
 
-        $transactions = $purchases->union($checks)->get();
+        $checksResult = $checks->get();
+        $purchasesResult = $purchases->get();
+
+        $transactions = collect($checksResult)->merge($purchasesResult)->sortBy('created_at')->values();
 
         return collect([
-            'transactions' => $transactions,
+            'transactions' => $transactions->toArray(),
             'incomingAmount' => $this->calculateIncomingAmount($transactions),
             'outcomingAmount' => $this->calculateOutcomingAmount($transactions),
         ]);
