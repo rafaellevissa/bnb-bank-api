@@ -21,6 +21,7 @@ class TransactionRepository
     public function all(?int $userId = null): Collection
     {
         $checks = User::select('users.id', 'checks.*', DB::raw("'incoming' as type"))
+            ->where('checks.status', 'accepted')
             ->join('checks', 'users.id', '=', 'checks.user_id');
 
 

@@ -4,13 +4,23 @@ namespace App\Repositories;
 
 use App\Models\Check;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 class CheckRepository
 {
     public function all(?string $userId = null)
     {
         $checks = ($userId) ? Check::where('user_id', $userId)->get() : Check::all();
+
+        return $checks->map(function ($check) {
+            $checkArray = $check->toArray();
+            $checkArray['pictureBase64'] = $check->getPictureBase64Content();
+            return $checkArray;
+        });
+    }
+
+    public function findByStatus(string $status)
+    {
+        $checks = Check::where('status', $status)->get();
 
         return $checks->map(function ($check) {
             $checkArray = $check->toArray();

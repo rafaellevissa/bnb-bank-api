@@ -16,7 +16,7 @@ class AdminCheckController extends Controller
 
     public function index()
     {
-        $checks = $this->checkRepository->all();
+        $checks = $this->checkRepository->findByStatus("pending");
 
         return response()->json($checks);
     }
