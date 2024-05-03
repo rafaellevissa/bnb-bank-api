@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminCheckController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckController;
 use App\Http\Controllers\PurchaseController;
@@ -45,6 +46,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'checks'], function () {
         Route::middleware('can:checks.list')->get('/', [AdminCheckController::class, 'index']);
+        Route::middleware('can:checks.list')->get('/{checkId}', [AdminCheckController::class, 'find']);
         Route::middleware('can:checks.update')->put('/{checkId}', [AdminCheckController::class, 'update']);
+        Route::middleware('can:users.update')->put('/{userId}/increase-balance', [AdminUserController::class, 'increaseBalance']);
+        Route::middleware('can:users.update')->put('/{userId}/decrease-balance', [AdminUserController::class, 'decreaseBalance']);
     });
 });

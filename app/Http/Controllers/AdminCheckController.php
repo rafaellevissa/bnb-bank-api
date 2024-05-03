@@ -21,6 +21,13 @@ class AdminCheckController extends Controller
         return response()->json($checks);
     }
 
+    public function find(string $checkId)
+    {
+        $check = $this->checkRepository->findOne($checkId, null, "pending");
+
+        return response()->json($check);
+    }
+
     public function update(string $checkId, Request $request)
     {
         $paylaod = $request->post();

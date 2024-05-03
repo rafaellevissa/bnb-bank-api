@@ -29,6 +29,9 @@ class PermissionSeeder extends Seeder
         [
             'name' => 'checks.update',
         ],
+        [
+            'name' => 'users.update',
+        ],
     ];
 
     /**

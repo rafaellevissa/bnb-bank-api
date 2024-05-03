@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CheckRequest;
 use App\Repositories\CheckRepository;
-use Illuminate\Http\Request;
 
 class CheckController extends Controller
 {

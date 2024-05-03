@@ -38,17 +38,19 @@ class CheckRepository
         return $payload;
     }
 
-    public function findOne(string $checkId, ?string $userId = null)
+    public function findOne(string $checkId, ?string $userId = null, ?string $status = null)
     {
+        $query = Check::with('user')->where('id', $checkId);
+
         if ($userId) {
-            $check = Check::where('id', $checkId)->where('user_id', $userId)->first();
-        } else {
-            $check = Check::where('id', $checkId)->first();
+            $query = $query->where('user_id', $userId);
         }
 
-        if (!$check) {
-            throw new \Exception("Check not found");
+        if ($status) {
+            $query = $query->where('status', $status);
         }
+
+        $check = $query->firstOrFail();
 
         $result = $check->toArray();
         $result['pictureBase64'] = $check->getPictureBase64Content();
