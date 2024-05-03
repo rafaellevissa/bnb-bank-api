@@ -18,17 +18,17 @@ class AdminUserController extends Controller
     {
         $balance = $request->input("balance");
 
-        $this->userRepository->increaseBalance($userId, $balance);
+        $user = $this->userRepository->increaseBalance($userId, $balance);
 
-        return response()->status(200);
+        return response()->json($user);
     }
 
     public function decreaseBalance(string $userId, Request $request)
     {
         $balance = $request->input("balance");
 
-        $this->userRepository->decreaseBalance($userId, $balance);
+        $user = $this->userRepository->decreaseBalance($userId, $balance);
 
-        return response()->status(200);
+        return response()->json($user);
     }
 }

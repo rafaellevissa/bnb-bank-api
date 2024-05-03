@@ -13,11 +13,11 @@ class UserRepository
 
     public function increaseBalance(string $userId, float $balance): int
     {
-        return User::query()->where('user_id', "=", $userId)->increment('balance', $balance);
+        return User::query()->where('id', "=", $userId)->increment('balance', $balance);
     }
 
     public function decreaseBalance(string $userId, float $balance): int
     {
-        return User::query()->where('user_id', "=", $userId)->decrement('balance', $balance);
+        return User::query()->where('id', "=", $userId)->decrement('balance', $balance);
     }
 }

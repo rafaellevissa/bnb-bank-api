@@ -48,6 +48,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::middleware('can:checks.list')->get('/', [AdminCheckController::class, 'index']);
         Route::middleware('can:checks.list')->get('/{checkId}', [AdminCheckController::class, 'find']);
         Route::middleware('can:checks.update')->put('/{checkId}', [AdminCheckController::class, 'update']);
+    });
+    Route::group(['prefix' => 'user'], function () {
         Route::middleware('can:users.update')->put('/{userId}/increase-balance', [AdminUserController::class, 'increaseBalance']);
         Route::middleware('can:users.update')->put('/{userId}/decrease-balance', [AdminUserController::class, 'decreaseBalance']);
     });

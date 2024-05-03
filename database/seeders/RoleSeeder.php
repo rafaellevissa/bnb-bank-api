@@ -13,6 +13,7 @@ class RoleSeeder extends Seeder
             'permissions' => [
                 'checks.list',
                 'checks.update',
+                'users.update',
             ],
         ],
         [
