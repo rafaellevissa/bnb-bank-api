@@ -17,6 +17,7 @@ build_image:
   before_script:
     - docker info
     - docker --version
+    - cat "$ENV" > .env
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME .
