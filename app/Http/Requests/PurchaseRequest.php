@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\EnoughBalance;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PurchaseRequest extends FormRequest
@@ -22,7 +23,7 @@ class PurchaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'amount' => 'required|numeric|min:0',
+            'amount' => ['required', 'numeric', 'min:0', new EnoughBalance()],
             'date' => 'required|date_format:Y-m-d',
             'description' => 'required|string|max:255',
         ];

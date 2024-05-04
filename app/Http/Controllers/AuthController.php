@@ -31,10 +31,14 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $user = Auth::user();
+        // $user = User::with("roles.permissions")->find(Auth::user()->id);
+        $user = Auth::user()->toArray();
+        $permissions = Auth::user()->getAllPermissions()->toArray();
+
         return response()->json([
             'status' => 'success',
             'user' => $user,
+            'permissions' => $permissions,
             'authorization' => [
                 'token' => $token,
                 'type' => 'bearer',
@@ -46,7 +50,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6',
         ]);
 
@@ -58,11 +62,13 @@ class AuthController extends Controller
 
         $user->assignRole('customer');
 
+        $permissions = $user->getAllPermissions()->toArray();
         $token = Auth::login($user);
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully',
             'user' => $user,
+            'permissions' => $permissions,
             'authorization' => [
                 'token' => $token,
                 'type' => 'bearer',
