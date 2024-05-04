@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  APP_IMAGE_NAME: ${{ env.REGISTRY }}/bnb-bank-api
+  APP_IMAGE_NAME: bnb-bank-api
   APP_NAME: bnb-bank-api
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ env.APP_IMAGE_NAME }}
+          repository: "${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}"
           tag_with_ref: true
 
   deploy:
@@ -39,5 +39,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ${{ env.REGISTRY }} &&
-            docker pull ${{ env.APP_IMAGE_NAME }}:latest &&
-            docker run -d --name ${{ env.APP_NAME }} -p 0.0.0.0:80:80 ${{ env.APP_IMAGE_NAME }}:latest'
+            docker pull "${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}":latest &&
+            docker run -d --name ${{ env.APP_NAME }} -p 0.0.0.0:80:80 "${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}":latest'
