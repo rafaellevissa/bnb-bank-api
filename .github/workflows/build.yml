@@ -49,4 +49,5 @@ jobs:
           script: |
             docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} &&
             docker pull ${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:latest &&
-            docker run -d --name ${{ env.APP_NAME }} -p 80:80 ${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:latest
+            docker inspect ${{ env.APP_NAME }} &> /dev/null && docker rm ${{ env.APP_NAME }} || true
+            docker run -d --name ${{ env.APP_NAME }} -p 8080:80 ${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:latest
