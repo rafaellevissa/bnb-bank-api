@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+permissions: write-all
+
 env:
   REGISTRY: ghcr.io
   APP_IMAGE_NAME: rafaellevissa/bnb-bank-api
